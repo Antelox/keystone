@@ -3,9 +3,7 @@
 import glob
 import logging
 import os
-import platform
 import shutil
-import subprocess
 import sys
 from setuptools import setup
 from setuptools.command.build_py import build_py
@@ -81,6 +79,7 @@ def build_libraries():
     Prepare the Keystone engine directory for a binary distribution or installation.
     Builds shared libraries and copies header files.
     """
+    cwd = os.getcwd()
     clean_bins()
     os.mkdir(LIBS_DIR)
 
@@ -99,14 +98,32 @@ def build_libraries():
     if not os.path.exists(BUILD_DIR):
         os.mkdir(BUILD_DIR)
 
+    os.chdir(BUILD_DIR)
+    conf = 'Debug' if int(os.getenv('DEBUG', 0)) else 'Release'
+    cmake_args = ['cmake',
+                  '-DBUILD_SHARED_LIBS=ON',
+                  '-DKEYSTONE_BUILD_STATIC_RUNTIME=OFF',
+                  '-DLLVM_BUILD_TESTS=OFF',
+                  '-DBUILD_LIBS_ONLY=1',
+                  '-DLLVM_TARGETS_TO_BUILD=all',
+                  f"-DCMAKE_BUILD_TYPE={conf}"
+                  ]
+    cmake_build = ['cmake',
+                   '--build',
+                   '.'
+                   ]
+
     if sys.platform == 'win32':
-        plat = 'X86' if platform.architecture()[0] == '32bit' else ''
-        subprocess.check_call([r'..\nmake-dll.bat', plat], cwd=BUILD_DIR)
+        cmake_args += ['-G "NMake Makefiles"']
+        os.system(' '.join(cmake_args + ['..']))
+        os.system(' '.join(cmake_build))
         winobj_dir = os.path.join(BUILD_DIR, 'llvm', 'bin')
         shutil.copy(os.path.join(winobj_dir, LIBRARY_FILE), LIBS_DIR)
     else:
-        cmd = ['sh', '../make-share.sh', 'lib_only']
-        subprocess.check_call(cmd, cwd=BUILD_DIR)
+        cmake_args += ['-G "Unix Makefiles"']
+        cmake_build += ['-j', str(os.getenv("THREADS", "4"))]
+        os.system(' '.join(cmake_args + ['..']))
+        os.system(' '.join(cmake_build))
         obj_dir = os.path.join(BUILD_DIR, 'llvm', 'bin' if sys.platform == 'cygwin' else 'lib')
         obj64_dir = os.path.join(BUILD_DIR, 'llvm', 'lib64')
         if sys.platform == 'cygwin':
@@ -120,6 +137,7 @@ def build_libraries():
                 shutil.copy(os.path.join(obj_dir, LIBRARY_FILE), LIBS_DIR)
             except:
                 shutil.copy(os.path.join(obj64_dir, LIBRARY_FILE), LIBS_DIR)
+    os.chdir(cwd)
 
 
 class CustomSDist(sdist):

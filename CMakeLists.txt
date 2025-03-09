@@ -1,7 +1,7 @@
 # Keystone Assembler Engine (www.keystone-engine.org)
 # By Nguyen Anh Quynh, 2016
 
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 3.15)
 project(keystone)
 
 set(KEYSTONE_VERSION_MAJOR 0)
@@ -89,7 +89,7 @@ endif ()
 
 add_subdirectory(llvm)
 
-# for Windows, do not build kstool if buiding DLL
+# for Windows, do not build kstool if building DLL
 # TODO: fix this
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 if (NOT BUILD_LIBS_ONLY AND NOT BUILD_SHARED_LIBS)

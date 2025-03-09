@@ -67,7 +67,7 @@ sdist3_win:
 	python3 setup.py sdist register upload
 
 clean:
-	rm -rf $(OBJDIR) src/ dist/ README
+	rm -rf $(OBJDIR) dist/ src/ dist/ README
 	rm -f keystone/*.so
 	rm -rf prebuilt/win64/keystone.dll
 	rm -rf prebuilt/win32/keystone.dll
