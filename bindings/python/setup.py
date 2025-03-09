@@ -126,7 +126,7 @@ def build_libraries():
         os.system(' '.join(cmake_build))
         obj_dir = os.path.join(BUILD_DIR, 'llvm', 'bin' if sys.platform == 'cygwin' else 'lib')
         obj64_dir = os.path.join(BUILD_DIR, 'llvm', 'lib64')
-        if sys.platform == 'cygwin':
+        if sys.platform == 'darwin':
             for file in glob.glob(os.path.join(obj_dir, MAC_LIBRARY_FILE)):
                 try:
                     shutil.copy(file, LIBS_DIR, follow_symlinks=False)

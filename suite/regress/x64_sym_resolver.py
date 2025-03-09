@@ -17,7 +17,7 @@ class TestX86(regress.RegressTest):
                 # put value of this symbol in @value
                 value = 0x7FF98A050840
                 # we handled this symbol, so return true
-                print 'sym_resolver called!'
+                print('sym_resolver called!')
                 return True
  
             # we did not handle this symbol, so return false
