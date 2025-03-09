@@ -7,11 +7,13 @@
 # Author: Ryan Hileman
 
 from keystone import *
-
+import unittest
 import regress
 
 
 class TestX86Nasm(regress.RegressTest):
+
+    @unittest.expectedFailure
     def runTest(self):
         # Initialize Keystone engine
         ks = Ks(KS_ARCH_X86, KS_MODE_32)

@@ -106,7 +106,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.arch }}
           CIBW_ENVIRONMENT: DEBUG=${{ env.KEYSTONE_DEBUG }}
           CIBW_ENVIRONMENT_PASS_LINUX: DEBUG
-#          CIBW_TEST_COMMAND: 'python -m unittest discover -v {project}/suite/regress "*.py"'
+          CIBW_TEST_COMMAND: 'python -m unittest discover -v {project}/suite/regress "*.py"'
           # https://github.com/pypa/cibuildwheel/pull/1169
           CIBW_TEST_SKIP: "cp38-macosx_*:arm64"
         with:
@@ -133,14 +133,14 @@ jobs:
         shell: bash
         run: |
           C:/Python27/python.exe -m pip install wheelhouse/*py2*.whl
-          #C:/Python27/python.exe -m unittest discover suite/regress "*.py"
+          C:/Python27/python.exe -m unittest discover suite/regress "*.py"
 
       # NOTE: no python2.7 support for macos-13: https://github.com/LizardByte/setup-python-action/issues/2
       - name: 'Python 2.7 tests - Non-Windows'
         if: (runner.os == 'Linux' && (matrix.arch == 'x86_64' || matrix.arch == 'aarch64') && matrix.cibw_build == 'cp38-manylinux*') || (runner.os == 'macOS' && matrix.arch == 'arm64')
         run: |
           python2 -m pip install wheelhouse/*py2*.whl
-          #python2 -m unittest discover suite/regress "*.py"
+          python2 -m unittest discover suite/regress "*.py"
 
       - uses: actions/upload-artifact@v4
         with:

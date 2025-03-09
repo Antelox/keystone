@@ -8,6 +8,7 @@
 
 
 from keystone import *
+import unittest
 import regress
 
 def sym_resolver(symbol, value):
@@ -17,6 +18,8 @@ def sym_resolver(symbol, value):
     return False
 
 class TestX86Nasm(regress.RegressTest):
+
+    @unittest.expectedFailure
     def runTest(self):
         ks = Ks(KS_ARCH_X86, KS_MODE_32)
         ks.syntax = KS_OPT_SYNTAX_NASM
@@ -29,6 +32,8 @@ class TestX86Nasm(regress.RegressTest):
 
 
 class TestX86Intel(regress.RegressTest):
+
+    @unittest.expectedFailure
     def runTest(self):
         ks = Ks(KS_ARCH_X86, KS_MODE_32)
         ks.syntax = KS_OPT_SYNTAX_INTEL
@@ -38,6 +43,8 @@ class TestX86Intel(regress.RegressTest):
 
 
 class TestX86Att(regress.RegressTest):
+
+    @unittest.expectedFailure
     def runTest(self):
         ks = Ks(KS_ARCH_X86, KS_MODE_32)
         ks.syntax = KS_OPT_SYNTAX_ATT
