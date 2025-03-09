@@ -35,9 +35,6 @@ else:
 
 def clean_bins():
     shutil.rmtree(LIBS_DIR, ignore_errors=True)
-    shutil.rmtree(SRC_DIR, ignore_errors=True)
-    shutil.rmtree(os.path.join(ROOT_DIR, 'build'), ignore_errors=True)
-    shutil.rmtree(os.path.join(ROOT_DIR, 'dist'), ignore_errors=True)
 
 
 def copy_sources():
