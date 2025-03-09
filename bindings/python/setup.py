@@ -114,22 +114,22 @@ def build_libraries():
 
     if sys.platform == 'win32':
         cmake_args += ['-G "NMake Makefiles"']
-        os.system(' '.join(cmake_args + ['..']))
-        os.system(' '.join(cmake_build))
-        winobj_dir = os.path.join(BUILD_DIR, 'llvm', 'bin')
-        print(os.listdir(winobj_dir))
-        shutil.copy(os.path.join(winobj_dir, LIBRARY_FILE), LIBS_DIR)
     else:
         cmake_args += ['-G "Unix Makefiles"']
         cmake_build += ['-j', str(os.getenv("THREADS", "4"))]
-        os.system(' '.join(cmake_args + ['..']))
-        os.system(' '.join(cmake_build))
-        obj_dir = os.path.join(BUILD_DIR, 'llvm', 'bin' if sys.platform == 'cygwin' else 'lib')
-        obj64_dir = os.path.join(BUILD_DIR, 'llvm', 'lib64')
-        if os.path.exists(obj_dir):
-            shutil.copy(os.path.join(obj_dir, LIBRARY_FILE), LIBS_DIR)
-        if os.path.exists(obj64_dir):
-            shutil.copy(os.path.join(obj64_dir, LIBRARY_FILE), LIBS_DIR)
+
+    os.system(' '.join(cmake_args + ['..']))
+    os.system(' '.join(cmake_build))
+    # if cygwin bin else lib
+    lib1_path = os.path.join(BUILD_DIR, 'llvm', 'bin', LIBRARY_FILE)
+    lib2_path = os.path.join(BUILD_DIR, 'llvm', 'lib', LIBRARY_FILE)
+    lib64_path = os.path.join(BUILD_DIR, 'llvm', 'lib64', LIBRARY_FILE)
+    if os.path.exists(lib1_path):
+        shutil.copy(lib1_path, LIBS_DIR)
+    if os.path.exists(lib2_path):
+        shutil.copy(lib2_path, LIBS_DIR)
+    if os.path.exists(lib64_path):
+        shutil.copy(lib64_path, LIBS_DIR)
 
     os.chdir(cwd)
 
