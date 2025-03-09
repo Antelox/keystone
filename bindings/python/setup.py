@@ -22,7 +22,6 @@ PATH_LIB32 = os.path.join(ROOT_DIR, 'prebuilt', 'win32')
 
 if sys.platform == 'darwin':
     LIBRARY_FILE = "libkeystone.dylib"
-    MAC_LIBRARY_FILE = "libkeystone*.dylib"
 elif sys.platform == 'win32':
     LIBRARY_FILE = "keystone.dll"
 elif sys.platform == 'cygwin':
@@ -118,6 +117,7 @@ def build_libraries():
         os.system(' '.join(cmake_args + ['..']))
         os.system(' '.join(cmake_build))
         winobj_dir = os.path.join(BUILD_DIR, 'llvm', 'bin')
+        print(os.listdir(winobj_dir))
         shutil.copy(os.path.join(winobj_dir, LIBRARY_FILE), LIBS_DIR)
     else:
         cmake_args += ['-G "Unix Makefiles"']
@@ -126,17 +126,11 @@ def build_libraries():
         os.system(' '.join(cmake_build))
         obj_dir = os.path.join(BUILD_DIR, 'llvm', 'bin' if sys.platform == 'cygwin' else 'lib')
         obj64_dir = os.path.join(BUILD_DIR, 'llvm', 'lib64')
-        if sys.platform == 'darwin':
-            for file in glob.glob(os.path.join(obj_dir, MAC_LIBRARY_FILE)):
-                try:
-                    shutil.copy(file, LIBS_DIR, follow_symlinks=False)
-                except:
-                    shutil.copy(file, LIBS_DIR)
-        else:
-            try:
-                shutil.copy(os.path.join(obj_dir, LIBRARY_FILE), LIBS_DIR)
-            except:
-                shutil.copy(os.path.join(obj64_dir, LIBRARY_FILE), LIBS_DIR)
+        if os.path.exists(obj_dir):
+            shutil.copy(os.path.join(obj_dir, LIBRARY_FILE), LIBS_DIR)
+        if os.path.exists(obj64_dir):
+            shutil.copy(os.path.join(obj64_dir, LIBRARY_FILE), LIBS_DIR)
+
     os.chdir(cwd)
 
 
