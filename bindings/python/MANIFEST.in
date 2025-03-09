@@ -1,6 +1,7 @@
 recursive-include src *
 recursive-include prebuilt *
-include LICENSE.TXT
-include README.md
-global-exclude *.pyc
-global-exclude __pycache__
+global-include *.a
+global-include *.so
+global-include *.*lib
+global-include *.dll
+global-include *.h

@@ -1,4 +1,5 @@
 # Keystone Python bindings, by Nguyen Anh Quynnh <aquynh@gmail.com>
+import os.path
 import sys
 _python2 = sys.version_info[0] < 3
 if _python2:
@@ -17,7 +18,7 @@ import inspect
 if not hasattr(sys.modules[__name__], '__file__'):
     __file__ = inspect.getfile(inspect.currentframe())
 
-_lib_path = split(__file__)[0]
+_lib_path = os.path.join(split(__file__)[0], 'lib')
 _all_libs = ('keystone.dll', 'libkeystone.so', 'libkeystone.so.%u' %KS_API_MAJOR, 'libkeystone.dylib')
 _found = False
 
