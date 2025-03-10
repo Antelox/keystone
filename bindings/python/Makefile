@@ -68,9 +68,8 @@ sdist3_win:
 
 clean:
 	rm -rf $(OBJDIR) dist/ src/ dist/ README
-	rm -f keystone/*.so
-	rm -rf prebuilt/win64/keystone.dll
-	rm -rf prebuilt/win32/keystone.dll
+	rm -f keystone/lib/*
+	rm -rf prebuilt/*
 
 
 SAMPLES = sample_arm.py sample_arm64.py sample_mips.py

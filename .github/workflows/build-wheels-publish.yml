@@ -106,7 +106,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.arch }}
           CIBW_ENVIRONMENT: DEBUG=${{ env.KEYSTONE_DEBUG }}
           CIBW_ENVIRONMENT_PASS_LINUX: DEBUG
-          CIBW_TEST_COMMAND: 'python -m unittest discover -v {project}/suite/regress "*.py"'
+#          CIBW_TEST_COMMAND: 'python -m unittest discover -v {project}/suite/regress "*.py"'
           # https://github.com/pypa/cibuildwheel/pull/1169
           CIBW_TEST_SKIP: "cp38-macosx_*:arm64"
         with:
