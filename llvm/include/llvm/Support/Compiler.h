@@ -92,7 +92,11 @@
 #define LLVM_LVALUE_FUNCTION
 #endif
 
-#if __has_feature(cxx_constexpr) || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#if defined(__cpp_constexpr) && (__cpp_constexpr >= 201304L)
+# define LLVM_CONSTEXPR constexpr
+#elif defined(__GXX_EXPERIMENTAL_CXX0X__)
+# define LLVM_CONSTEXPR constexpr
+#elif defined(_MSC_VER) && _MSC_VER >= 1900 // MSVC 2015+
 # define LLVM_CONSTEXPR constexpr
 #else
 # define LLVM_CONSTEXPR
